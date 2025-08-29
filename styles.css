@@ -4,7 +4,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Hello+Paris+Script&display=swap');
 
 :root {
-  /* פלטת צבעים אורגנית */
+  /* פלטת צבעים אורגנית מינימליסטית */
   --cinna: #CFB3A9;      /* ורוד פודרה עדין */
   --creme: #8B7355;      /* חום קרמי עמוק */
   --froth: #F1EEEB;      /* לבן שמנת */
@@ -16,7 +16,14 @@
   /* צבעי סטטוס */
   --positive: var(--gold);
   --negative: var(--cinna);
-  --neutral: rgba(255,255,255,0.9);
+  --neutral: rgba(255,255,255,0.95);
+
+  /* צבעי כפתורים חדשים - אלגנטיים ומינימליסטיים */
+  --primary: #2D3748;    /* אפור כהה אלגנטי */
+  --primary-light: #4A5568; /* אפור בינוני */
+  --accent: #E2E8F0;     /* אפור בהיר */
+  --text-dark: #1A202C;  /* טקסט כהה */
+  --text-light: #718096; /* טקסט בהיר */
 }
 
 * {
@@ -295,58 +302,66 @@ input:checked + .slider:before {
 }
 
 button {
-  background: var(--gold);
-  color: #2b2b2b;
-  border: 2px solid #d4af37;
-  border-radius: 10px;
-  padding: 0.75rem 1.5rem;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 0.875rem 2rem;
   font-family: 'Assistant', sans-serif;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.3s ease;
-  font-size: 0.875rem;
-  box-shadow: 0 2px 8px rgba(247, 231, 206, 0.3);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 0.9rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+  letter-spacing: 0.025em;
 }
 
 button:hover {
-  background: #e6d4b8;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(247, 231, 206, 0.4);
+  background: var(--primary-light);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 button:active {
   transform: translateY(0);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 button.ghost {
   background: transparent;
-  border: 1px solid var(--chai);
-  color: var(--creme);
+  border: 1px solid var(--primary);
+  color: var(--primary);
   box-shadow: none;
+  padding: 0.75rem 1.75rem;
 }
 
 button.ghost:hover {
-  background: var(--chai);
-  border-color: var(--creme);
-  color: #2b2b2b;
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
 }
 
 button.small {
-  padding: 0.5rem 1rem;
+  padding: 0.625rem 1.25rem;
   font-size: 0.8rem;
+  border-radius: 10px;
 }
 
 .signature {
-  margin-bottom: 1rem;
+  margin: 2rem 0 1.5rem 0;
   display: flex;
   justify-content: center;
+  align-items: center;
+  padding: 1rem;
 }
 
 .signature-image {
-  max-width: 200px;
+  max-width: 300px;
   height: auto;
-  opacity: 0.8;
-  filter: grayscale(20%);
+  opacity: 0.9;
+  filter: grayscale(10%) contrast(1.1);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .footer {
