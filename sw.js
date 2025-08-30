@@ -1,18 +1,16 @@
 // Service Worker לנומרולוגיה יומית
 // מספק פונקציונליות אופליין ושמירה במטמון
 
-const CACHE_NAME = 'numerology-v1.0.0';
+const CACHE_NAME = 'numerology-v1.1.0';
 const urlsToCache = [
   './',
   './index.html',
   './styles.css',
   './app.js',
   './manifest.webmanifest',
+  './icons/app-icon.svg',
   './icons/favicon.svg',
-  './icons/icon-192.png',
-  './icons/icon-512.png',
-  './icons/maskable-192.png',
-  './icons/maskable-512.png',
+  './חתימההה.png',
   'https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700&display=swap'
 ];
 

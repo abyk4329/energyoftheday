@@ -31,17 +31,38 @@ class NumerologyApp {
     const year = today.getFullYear();
     const month = String(today.getMonth() + 1).padStart(2, '0');
     const day = String(today.getDate()).padStart(2, '0');
-    this.elements.dateInput.value = `${year}-${month}-${day}`;
+    const todayString = `${year}-${month}-${day}`;
+    
+    // טען תאריך שמור או השתמש בהיום
+    const savedDate = localStorage.getItem('lastSelectedDate') || todayString;
+    this.elements.dateInput.value = savedDate;
+    
+    // שמור את התאריך הנוכחי אם זה הפעם הראשונה
+    if (!localStorage.getItem('lastSelectedDate')) {
+      localStorage.setItem('lastSelectedDate', todayString);
+    }
   }
   
   bindEvents() {
-    this.elements.dateInput.addEventListener('change', () => this.calculateEnergy());
-    this.elements.todayBtn.addEventListener('click', () => {
-      this.setTodayDate();
+    this.elements.dateInput.addEventListener('change', () => {
+      // שמור את התאריך שנבחר
+      localStorage.setItem('lastSelectedDate', this.elements.dateInput.value);
       this.calculateEnergy();
     });
-    this.elements.shareBtn.addEventListener('click', () => this.shareReading());
-    this.elements.installBtn.addEventListener('click', () => this.installApp());
+    
+    this.elements.todayBtn.addEventListener('click', () => {
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = String(today.getMonth() + 1).padStart(2, '0');
+      const day = String(today.getDate()).padStart(2, '0');
+      const todayString = `${year}-${month}-${day}`;
+      
+      this.elements.dateInput.value = todayString;
+      localStorage.setItem('lastSelectedDate', todayString);
+      this.calculateEnergy();
+    });
+    
+    this.elements.shareBtn.addEventListener('click', this.shareResult.bind(this));
   }
   
   calculateNumerology(dateString) {
@@ -339,6 +360,42 @@ class NumerologyApp {
     });
   }
   
+  showNotification(message, type = 'success') {
+    // הסר התראה קיימת
+    const existingNotification = document.querySelector('.notification');
+    if (existingNotification) {
+      existingNotification.remove();
+    }
+    
+    // צור התראה חדשה
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.textContent = message;
+    notification.style.cssText = `
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: ${type === 'success' ? '#48BB78' : '#E53E3E'};
+      color: white;
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 1000;
+      font-family: 'Assistant', sans-serif;
+      font-size: 0.9rem;
+      animation: slideDown 0.3s ease-out;
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // הסר את ההתראה אחרי 3 שניות
+    setTimeout(() => {
+      notification.style.animation = 'slideUp 0.3s ease-in';
+      setTimeout(() => notification.remove(), 300);
+    }, 3000);
+  }
+  
   async shareReading() {
     const dateValue = this.elements.dateInput.value;
     const energyNumber = this.elements.energyNumber.textContent;
@@ -353,6 +410,7 @@ class NumerologyApp {
     if (navigator.share) {
       try {
         await navigator.share(shareData);
+        this.showNotification('התחזית שותפה בהצלחה!');
       } catch (err) {
         console.log('שיתוף בוטל');
       }
@@ -361,8 +419,9 @@ class NumerologyApp {
       const textToCopy = `${shareData.text}\n${shareData.url}`;
       try {
         await navigator.clipboard.writeText(textToCopy);
-        alert('הטקסט הועתק ללוח!');
+        this.showNotification('הטקסט הועתק ללוח!');
       } catch (err) {
+        this.showNotification('שגיאה בשיתוף', 'error');
         console.log('שגיאה בהעתקה', err);
       }
     }
